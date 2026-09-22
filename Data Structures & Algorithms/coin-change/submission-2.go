@@ -1,18 +1,16 @@
-func coinChange(coins []int, amount int) int {
-	dp := make([]int, amount + 1)
-	for i := range dp {dp[i] = amount + 1}
-	dp[0] = 0
-
-	for i := 1; i <= amount; i++ {
-		for _, coin := range coins {
-			if i - coin >= 0 {
-				dp[i] = min(dp[i], 1 + dp[i - coin])
+func numDecodings(s string) int {
+    dp, dp1, dp2 := 0, 1, 0
+    for i := len(s) - 1; i >= 0; i-- {
+        if s[i] == '0' {
+            dp = 0
+        } else {
+            dp = dp1
+			if i+1 < len(s) && 
+			(s[i] == '1' || s[i] == '2' && s[i+1] < '7') {
+				dp += dp2
 			}
-		}
-	}
-
-	if dp[amount] > amount {
-        return -1
+        }
+        dp2, dp1, dp = dp1, dp, 0
     }
-    return dp[amount]
+    return dp1
 }
